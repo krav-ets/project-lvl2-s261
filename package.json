@@ -1,6 +1,6 @@
 {
   "name": "gendiff-kravets",
-  "version": "0.0.2",
+  "version": "0.1.1",
   "description": "",
   "main": "index.js",
   "bin": {
@@ -45,6 +45,7 @@
     "jest-cli": "^22.4.3"
   },
   "dependencies": {
-    "commander": "^2.15.1"
+    "commander": "^2.15.1",
+    "lodash": "^4.17.10"
   }
 }

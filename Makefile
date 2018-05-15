@@ -1,5 +1,5 @@
 run:
-	npm run babel-node -- src/bin/gendiff.js
+	npm run babel-node -- src/bin/gendiff.js __tests__/__fixtures__/cp2_before.json __tests__/__fixtures__/cp2_after.json
 
 build:
 	rm -rf dist
