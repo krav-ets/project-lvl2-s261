@@ -1,11 +1,15 @@
 import fs from 'fs';
 import _ from 'lodash';
+import path from 'path';
+import getParser from './parsers';
 
 const genDiff = (beforePath, afterPath) => {
+  const ext = path.extname(beforePath);
   const beforeData = fs.readFileSync(beforePath, 'utf-8');
   const afterData = fs.readFileSync(afterPath, 'utf-8');
-  const beforeObject = JSON.parse(beforeData);
-  const afterObject = JSON.parse(afterData);
+  const parse = getParser(ext);
+  const beforeObject = parse(beforeData);
+  const afterObject = parse(afterData);
 
   const keys = _.union(_.keys(beforeObject), _.keys(afterObject));
 
