@@ -23,4 +23,14 @@ describe('gendiff', () => {
 
     expect(diffString).toEqual(expected);
   });
+
+  it('#checkpoint 4: ini', () => {
+    const beforeJsonPath = '__tests__/__fixtures__/cp4_before.ini';
+    const afterJsonPath = '__tests__/__fixtures__/cp4_after.ini';
+
+    const diffString = genDiff(beforeJsonPath, afterJsonPath);
+
+    const expected = fs.readFileSync('__tests__/__fixtures__/cp2_expected', 'utf-8');
+    expect(diffString).toEqual(expected);
+  });
 });
