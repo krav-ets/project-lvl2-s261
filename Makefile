@@ -4,6 +4,9 @@ run-tree:
 run-plain:
 	npm run babel-node -- src/bin/gendiff.js -f plain __tests__/__fixtures__/before_tree.json __tests__/__fixtures__/after_tree.json
 
+run-json:
+	npm run babel-node -- src/bin/gendiff.js --format json __tests__/__fixtures__/before_tree.ini __tests__/__fixtures__/after_tree.ini
+
 run-help:
 	npm run babel-node -- src/bin/gendiff.js -h
 

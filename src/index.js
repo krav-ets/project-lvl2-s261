@@ -1,48 +1,8 @@
 import fs from 'fs';
-import _ from 'lodash';
 import path from 'path';
 import getParser from './parsers';
 import getRenderer from './renderers';
-
-const genAst = (before, after) => {
-  const keys = _.union(_.keys(before), _.keys(after));
-  return keys.map((key) => {
-    if (_.isPlainObject(before[key]) && _.isPlainObject(after[key])) {
-      return {
-        key,
-        type: 'nested',
-        children: genAst(before[key], after[key]),
-      };
-    }
-    if (before[key] === after[key]) {
-      return {
-        key,
-        type: 'unchanged',
-        beforeValue: before[key],
-      };
-    }
-    if (!_.has(before, key)) {
-      return {
-        key,
-        type: 'added',
-        afterValue: after[key],
-      };
-    }
-    if (!_.has(after, key)) {
-      return {
-        key,
-        type: 'deleted',
-        beforeValue: before[key],
-      };
-    }
-    return {
-      key,
-      type: 'updated',
-      beforeValue: before[key],
-      afterValue: after[key],
-    };
-  });
-};
+import genAst from './ast';
 
 const genDiff = (beforePath, afterPath, format) => {
   const ext = path.extname(beforePath);
