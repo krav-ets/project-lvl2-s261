@@ -2,6 +2,7 @@ import fs from 'fs';
 import _ from 'lodash';
 import path from 'path';
 import getParser from './parsers';
+import getRenderer from './renderers';
 
 const genAst = (before, after) => {
   const keys = _.union(_.keys(before), _.keys(after));
@@ -43,43 +44,7 @@ const genAst = (before, after) => {
   });
 };
 
-const render = (data) => {
-  const genString = (ast, n) => {
-    const interval = num => ' '.repeat(num);
-
-    const stringify = (val) => {
-      if (_.isPlainObject(val)) {
-        const keys = Object.keys(val);
-        const printedVal = keys.map(key => `${interval(n + 6)}${key}: ${val[key]}`);
-        return `{\n${printedVal.join('\n')}\n${interval(n + 2)}}`;
-      }
-      return val;
-    };
-
-    const objToStr = ast.map((obj) => {
-      switch (obj.type) {
-        case 'nested':
-          return `${interval(n + 2)}${obj.key}: {\n${genString(obj.children, n + 4)}\n${interval(n + 2)}}`;
-        case 'updated':
-          return `${interval(n)}+ ${obj.key}: ${stringify(obj.afterValue)}\n${interval(n)}- ${obj.key}: ${stringify(obj.beforeValue)}`;
-        case 'unchanged':
-          return `${interval(n + 2)}${obj.key}: ${stringify(obj.beforeValue)}`;
-        case 'added':
-          return `${interval(n)}+ ${obj.key}: ${stringify(obj.afterValue)}`;
-        case 'deleted':
-          return `${interval(n)}- ${obj.key}: ${stringify(obj.beforeValue)}`;
-        default:
-          return null;
-      }
-    });
-
-    return objToStr.join('\n');
-  };
-
-  return `{\n${genString(data, 2)}\n}`;
-};
-
-const genDiff = (beforePath, afterPath) => {
+const genDiff = (beforePath, afterPath, format) => {
   const ext = path.extname(beforePath);
   const beforeData = fs.readFileSync(beforePath, 'utf-8');
   const afterData = fs.readFileSync(afterPath, 'utf-8');
@@ -87,6 +52,7 @@ const genDiff = (beforePath, afterPath) => {
   const beforeObject = parse(beforeData);
   const afterObject = parse(afterData);
   const ast = genAst(beforeObject, afterObject);
+  const render = getRenderer(format);
   return render(ast);
 };
 
