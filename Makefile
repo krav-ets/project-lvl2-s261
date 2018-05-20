@@ -7,6 +7,9 @@ run-plain:
 run-json:
 	npm run babel-node -- src/bin/gendiff.js --format json __tests__/__fixtures__/before_tree.ini __tests__/__fixtures__/after_tree.ini
 
+run-na:
+	npm run babel-node -- src/bin/gendiff.js __tests__/__fixtures__/before_tree.ini __tests__/__fixtures__/after_tree.ini
+
 run-help:
 	npm run babel-node -- src/bin/gendiff.js -h
 
@@ -16,6 +19,9 @@ build:
 
 test:
 	npm test
+
+watch:
+	npm test -- --watch
 
 lint:
 	npm run eslint .
