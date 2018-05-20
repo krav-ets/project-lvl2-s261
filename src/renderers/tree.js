@@ -27,7 +27,7 @@ export default (data) => {
         case 'deleted':
           return `${interval(n)}- ${obj.key}: ${stringify(obj.beforeValue, n)}`;
         default:
-          return null;
+          throw new Error(`unkown node type: ${obj.type}`);
       }
     });
 

@@ -4,10 +4,10 @@ const stringify = (val) => {
   if (_.isPlainObject(val)) {
     return 'complex value';
   }
-  if (_.isBoolean(val)) {
-    return val;
+  if (_.isString(val)) {
+    return `'${val}'`;
   }
-  return `'${val}'`;
+  return val;
 };
 
 export default (data) => {
@@ -26,7 +26,7 @@ export default (data) => {
         case 'deleted':
           return `Property '${fullProp}' was removed`;
         default:
-          return null;
+          throw new Error(`unkown node type: ${obj.type}`);
       }
     });
 
